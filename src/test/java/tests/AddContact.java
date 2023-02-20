@@ -16,7 +16,7 @@ public class AddContact extends AppiumConfig {
     public void precondition(){
         new AuthenticationScreen(driver)
                 // .fillLoginRegistrationForm(Auth.builder().email("john@gmail.com").password("Aa12345!").build())
-                .fillLoginRegistrationForm(Auth.builder().email("pokh@1i.ua").password("Nnoa12345$").build())
+                .fillLoginRegistrationForm(Auth.builder().email("pokh@1i.ua").password("Yyp12345!").build())
                 .submitLogin()
                 .isContactListActivityDisplayed();
     }
@@ -26,18 +26,18 @@ public class AddContact extends AppiumConfig {
         // if contacts>6 ---> delete all
         int i = new Random().nextInt(1000)+1000;
         Contact contact = Contact.builder()
-                .name("Lisa")
+                .name("Homer")
                 .lastName("Simpson")
-                .email("lisa"+i+"@gmail.com")
+                .email("homer"+i+"@gmail.com")
                 .phone("1234512345"+i)
                 .address("Springfield")
                 .description("Friend").build();
 
-        new ContactListScreen(driver)
+        AuthenticationScreen logout = new ContactListScreen(driver)
                 .openContactForm()
                 .fillContactForm(contact)
                 .submitContactForm()
-                .isContactAddedByNameLastName(contact.getName(),contact.getLastName())
+                .isContactAddedByNameLastName(contact.getName(), contact.getLastName())
                 .isContactAddedByPhone(contact.getPhone())
                 .logout();
     }
@@ -46,7 +46,7 @@ public class AddContact extends AppiumConfig {
     public void addNewContactEmptyName() {
         Contact contact = Contact.builder()
                 .lastName("Simpson")
-                .email("lisa@gmail.com")
+                .email("homer@gmail.com")
                 .phone("123451234500")
                 .address("Springfield")
                 .description("Friend").build();
@@ -54,12 +54,27 @@ public class AddContact extends AppiumConfig {
         new ContactListScreen(driver)
                 .openContactForm()
                 .fillContactForm(contact)
-                .submitContactFormNegative();
+                .submitContactFormNegative()
+                .isErrorMessageDisplayed("name=must not be blank");
+               // .submitErrorMessage();
 
 
     }
     @Test
     public void addNewContactEmptyLastName() {
+        Contact contact = Contact.builder()
+                .name("Homer")
+                .email("homer@gmail.com")
+                .phone("123451234500")
+                .address("Springfield")
+                .description("Friend").build();
+
+        new ContactListScreen(driver)
+                .openContactForm()
+                .fillContactForm(contact)
+                .submitContactFormNegative()
+                .isErrorMessageDisplayed("lastName=must not be blank");
+        // .submitErrorMessage();
 
     }
 

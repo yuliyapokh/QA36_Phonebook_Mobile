@@ -72,10 +72,3 @@ public class AuthenticationScreen extends BaseScreen{
         return this;
     }
 }
-
-
-
-
-
-
-}

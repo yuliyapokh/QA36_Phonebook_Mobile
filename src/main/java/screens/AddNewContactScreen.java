@@ -4,7 +4,11 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import models.Auth;
 import models.Contact;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 public class AddNewContactScreen extends BaseScreen{
     public AddNewContactScreen(AppiumDriver<MobileElement> driver) {
@@ -24,6 +28,8 @@ public class AddNewContactScreen extends BaseScreen{
     MobileElement descriptionEditText;
     @FindBy(id="com.sheygam.contactapp:id/createBtn")
     MobileElement createButton;
+     // @FindBy (id="android:id/button1")
+    //MobileElement submitError;
 
     public AddNewContactScreen fillContactForm(Contact contact){
         should(nameEditText,10);
@@ -45,4 +51,19 @@ public class AddNewContactScreen extends BaseScreen{
         createButton.click();
         return this;
     }
+
+    public AddNewContactScreen isErrorMessageDisplayed(String text){
+        Alert alert = new WebDriverWait(driver,15)
+                .until(ExpectedConditions.alertIsPresent());
+        driver.switchTo().alert();
+        Assert.assertTrue(alert.getText().contains(text));
+        alert.accept();
+
+
+        return this;
+    }
+//    public AddNewContactScreen submitErrorMessage(){
+//        submitError.click();
+//        return this;
+//    }
 }
