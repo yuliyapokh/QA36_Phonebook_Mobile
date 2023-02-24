@@ -3,6 +3,8 @@ package tests;
 import config.AppiumConfig;
 import models.Auth;
 import models.Contact;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import screens.AuthenticationScreen;
@@ -12,7 +14,7 @@ import java.util.Random;
 
 public class AddContact extends AppiumConfig {
 
-    @BeforeMethod
+    @BeforeClass
     public void precondition(){
         new AuthenticationScreen(driver)
                 // .fillLoginRegistrationForm(Auth.builder().email("john@gmail.com").password("Aa12345!").build())
@@ -33,13 +35,13 @@ public class AddContact extends AppiumConfig {
                 .address("Springfield")
                 .description("Friend").build();
 
-        AuthenticationScreen logout = new ContactListScreen(driver)
+                 new ContactListScreen(driver)
                 .openContactForm()
                 .fillContactForm(contact)
                 .submitContactForm()
                 .isContactAddedByNameLastName(contact.getName(), contact.getLastName())
-                .isContactAddedByPhone(contact.getPhone())
-                .logout();
+                .isContactAddedByPhone(contact.getPhone());
+
     }
 
     @Test
@@ -55,8 +57,9 @@ public class AddContact extends AppiumConfig {
                 .openContactForm()
                 .fillContactForm(contact)
                 .submitContactFormNegative()
-                .isErrorMessageDisplayed("name=must not be blank");
-               // .submitErrorMessage();
+                .isErrorMessageDisplayed("name=must not be blank")
+               .returnToContactList()
+                .logout();
 
 
     }
@@ -73,9 +76,17 @@ public class AddContact extends AppiumConfig {
                 .openContactForm()
                 .fillContactForm(contact)
                 .submitContactFormNegative()
-                .isErrorMessageDisplayed("lastName=must not be blank");
-        // .submitErrorMessage();
+                .isErrorMessageDisplayed("lastName=must not be blank")
+                 .returnToContactList()
+                .logout();
 
+
+    }
+
+    @AfterClass
+    public void postCondition(){
+        new ContactListScreen(driver)
+                .logout();
     }
 
 }

@@ -62,8 +62,18 @@ public class AddNewContactScreen extends BaseScreen{
 
         return this;
     }
-//    public AddNewContactScreen submitErrorMessage(){
-//        submitError.click();
-//        return this;
-//    }
+
+    public ContactListScreen returnToContactList(){
+        pause(2000);
+        driver.navigate().back();
+        return new ContactListScreen(driver);
+    }
+
+    public void pause(int time){
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

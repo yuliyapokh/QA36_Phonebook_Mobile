@@ -2,6 +2,7 @@ package screens;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
+import io.appium.java_client.TouchAction;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -28,6 +29,18 @@ public class ContactListScreen extends BaseScreen{
     List<MobileElement> nameList;
     @FindBy(id="com.sheygam.contactapp:id/rowPhone")
     List<MobileElement> phoneList;
+    @FindBy()
+    List<MobileElement>contacts;
+    @FindBy()
+    MobileElement yesButton;
+
+    public ContactListScreen removeOneContact(){
+        MobileElement contact = contacts.get(0);
+
+        TouchAction<?> touchAction = new TouchAction<>(driver);
+        touchAction.
+        return this;
+    }
 
     private void checkContacts(List<MobileElement> list,String text){
 
@@ -56,7 +69,9 @@ public class ContactListScreen extends BaseScreen{
     }
 
     public AddNewContactScreen openContactForm(){
-        plusButton.click();
+        if(activityTextView.getText().equals("Contact list")) {
+            plusButton.click();
+        }
         return new AddNewContactScreen(driver);
     }
 
